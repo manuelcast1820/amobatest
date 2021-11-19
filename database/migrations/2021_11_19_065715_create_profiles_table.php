@@ -17,7 +17,7 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->foreignId('User_id')
             ->constrained('users');  
-            $table->string('Ima_profile');
+            $table->string('Ima_profile')->nullable();
             $table->timestamps();
         });
     }

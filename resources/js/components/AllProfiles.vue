@@ -36,8 +36,9 @@
             }
         },
         created() {
+            const headers = { Authorization: `Bearer ${localStorage.token}` };
             this.axios
-                .get('http://amoba.test/api/profiles/')
+                .get('http://amoba.test/api/profiles/',{ headers } )
                 .then(response => {
                     this.profiles = response.data;
                 });
@@ -45,7 +46,7 @@
         methods: {
             deleteProduct(id) { 
                 this.axios
-                    .delete('http://amoba.test//api/products/${id}')
+                    .delete('http://amoba.test//api/profiles/${id}')
                     .then(response => {
                         let i = this.profiles.map(data => data.id).indexOf(id);
                         this.profiles.splice(i, 1)

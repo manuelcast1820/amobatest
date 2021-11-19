@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/validate-token', function () {
+    return ['data' => 'Token is valid',
+'success' => true];
+})->middleware('auth:api');
+
 Route::group([], function () {
 
     Route::post('login',  [ApiAuthController::class, 'login']);

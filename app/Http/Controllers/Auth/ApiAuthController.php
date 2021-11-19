@@ -19,16 +19,21 @@ class ApiAuthController extends Controller
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string'
         ]);
+        $tokenResult = $user = "";
+        try {
+            $request['password']=Hash::make($request->password);
+            $request['remember_token'] = Str::random(10);
+            $user = User::create($request->toArray());
+            $tokenResult = $user->createToken('Personal Access Token');
+            $success = true;
+        } catch (\Illuminate\Database\QueryException $ex) {
+            $success = false;
+            $message = $ex->getMessage();
+        }
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
-
-        return response()->json([
-            'message' => 'Successfully created user!'
-        ], 201);
+        $response = ['token' => $tokenResult,'user' => $user,
+        'success' => $success];
+        return response($response, 200);
     }
 
     public function login (Request $request) {
@@ -52,10 +57,12 @@ class ApiAuthController extends Controller
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
+        $success = true;
 
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
+            'success' => $success,
             'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
         ]);
     }
