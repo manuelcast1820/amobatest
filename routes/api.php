@@ -31,4 +31,7 @@ Route::group([], function () {
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [ApiAuthController::class, 'logout']);
     Route::resource('profiles', ProfileController::class);
+    Route::post('profiles/filter',  [ProfileController::class, 'filter']);
+    Route::post('update-profile',  [ProfileController::class, 'update']);
+    Route::post('filter-date',  [ProfileController::class, 'filterDate']);
 });

@@ -4,6 +4,8 @@
             <span class="text-secondary">AMOBA</span>
         </div>
         <notifications class="success" group="foo" position="bottom left" />
+        <notifications class="warning" group="warn" position="bottom left" />
+        <notifications class="info" group="info" position="bottom left" />
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="collapse navbar-collapse">
