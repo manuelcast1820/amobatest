@@ -84,7 +84,7 @@ class ProfileController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'First_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => "required|email|unique:users,email,$request->User_id ,id"
         ],[
             'email.required'=> 'El correo es obligatorio', 
             'First_name.required'=> 'El nombre es obligatorio', 

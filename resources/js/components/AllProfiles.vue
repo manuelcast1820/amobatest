@@ -83,6 +83,12 @@
                                 v-model="id"
                                 id="id"
                             />
+                            <input
+                                type="hidden"
+                                name="User_id"
+                                v-model="User_id"
+                                id="User_id"
+                            />
                             <div class="form-group">
                                 <label for="direccion">Descripción:</label>
                                 <input
@@ -297,6 +303,7 @@ export default {
             todate: "",
             en: en,
             es: es,
+            User_id : ""
         };
     },
     created() {
@@ -317,7 +324,7 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.axios
-                        .delete("http://amoba.test/api/profiles/" + id, {
+                        .delete("api/profiles/" + id, {
                             headers: headers,
                         })
                         .then((response) => {
@@ -356,7 +363,7 @@ export default {
 
             const headers = { Authorization: `Bearer ${localStorage.token}` };
             this.axios
-                .post("http://amoba.test/api/profiles", formData, {
+                .post("api/profiles", formData, {
                     headers: headers,
                 })
                 .then((response) => {
@@ -398,7 +405,7 @@ export default {
             const headers = { Authorization: `Bearer ${localStorage.token}` };
             const data = { search: this.search };
             this.axios
-                .post("http://amoba.test/api/profiles/filter", data, {
+                .post("api/profiles/filter", data, {
                     headers: headers,
                 })
                 .then((response) => {
@@ -411,7 +418,7 @@ export default {
             }
             const headers = { Authorization: `Bearer ${localStorage.token}` };
             this.axios
-                .get("http://amoba.test/api/profiles/?page=" + page, {
+                .get("api/profiles/?page=" + page, {
                     headers,
                 })
                 .then((response) => {
@@ -422,7 +429,7 @@ export default {
         editProfile(id) {
             const headers = { Authorization: `Bearer ${localStorage.token}` };
             this.axios
-                .get("http://amoba.test/api/profiles/" + id, {
+                .get("api/profiles/" + id, {
                     headers,
                 })
                 .then((response) => {
@@ -432,6 +439,7 @@ export default {
                     this.email = profile.user.email;
                     this.Description = profile.Description;
                     this.isNew = false;
+                    this.User_id = profile.User_id;
                     this.id = profile.id;
                 });
         },
@@ -443,11 +451,12 @@ export default {
             formData.append("First_name", this.name);
             formData.append("Description", this.Description);
             formData.append("id", this.id);
+            formData.append("User_id", this.User_id);
             if (this.photo.name !== undefined) {
                 formData.append("photo", this.photo.data, this.photo.name);
             }
             this.axios
-                .post("http://amoba.test/api/update-profile", formData, {
+                .post("api/update-profile", formData, {
                     headers: headers,
                 })
                 .then((response) => {
@@ -457,6 +466,7 @@ export default {
                     this.Description = "";
                     this.isNew = true;
                     this.id = "";
+                    this.User_id = "";
                     this.profiles = response.data;
                     this.$notify({
                         group: "info",
@@ -487,7 +497,7 @@ export default {
             const headers = { Authorization: `Bearer ${localStorage.token}` };
             const data = { fromdate: this.fromdate, todate: this.todate };
             this.axios
-                .post("http://amoba.test/api/filter-date", data, {
+                .post("api/filter-date", data, {
                     headers: headers,
                 })
                 .then((response) => {
