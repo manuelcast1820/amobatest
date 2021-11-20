@@ -43,6 +43,11 @@ import VueRouter from 'vue-router';
 import axios from 'axios';
 import { routes } from './routes';
 import Notifications from 'vue-notification';
+import VueSweetalert2 from 'vue-sweetalert2';
+
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -54,6 +59,7 @@ Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.use(Notifications);
+Vue.use(VueSweetalert2);
  
 const router = new VueRouter({
     mode: 'history',

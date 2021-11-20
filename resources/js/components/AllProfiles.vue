@@ -306,19 +306,31 @@ export default {
         deleteProfile(id) {
             const headers = { Authorization: `Bearer ${localStorage.token}` };
             console.log("delete " + id);
-            this.axios
-                .delete("http://amoba.test/api/profiles/" + id, {
-                    headers: headers,
-                })
-                .then((response) => {
-                    this.profiles = response.data;
-                    this.$notify({
-                        group: "warn",
-                        title: "Importante",
-                        text: "Registro Eliminado",
-                        duration: 4000,
-                    });
-                });
+            this.$swal({
+                title: "¿Estas seguro que deseas eliminar?",
+                text: "No podras revertir esta acción",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si",
+            }).then((result) => {
+                if (result.value) {
+                    this.axios
+                        .delete("http://amoba.test/api/profiles/" + id, {
+                            headers: headers,
+                        })
+                        .then((response) => {
+                            this.profiles = response.data;
+                            this.$notify({
+                                group: "warn",
+                                title: "Importante",
+                                text: "Registro Eliminado",
+                                duration: 4000,
+                            });
+                        });
+                }
+            });
         },
         showModalWindow: function () {
             this.modalVisibile = !this.modalVisibile;
