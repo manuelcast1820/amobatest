@@ -48,14 +48,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
-
-    public function setFirstNameAttribute($value)
-    {
-        $this->First_name = $this->name;
-    }
+  
 }

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Session;
 
 class ApiAuthController extends Controller
 {
@@ -48,8 +49,8 @@ class ApiAuthController extends Controller
         if (!Auth::attempt($credentials))
             return response()->json([
                 'message' => 'Unauthorized'
-            ], 401);
-
+            ], 401);        
+        $user = Auth::guard('api')->user();
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
 
@@ -68,10 +69,27 @@ class ApiAuthController extends Controller
     }
 
     public function logout (Request $request) {
-        $token = $request->user()->token();
-        $token->revoke();
-        $response = ['message' => 'You have been successfully logged out!'];
-        return response($response, 200);
+        try {
+            Session::flush();
+            $success = true;
+            $message = 'Successfully logged out';
+            $request->user()->token()->revoke();
+        } catch (\Illuminate\Database\QueryException $ex) {
+            $success = false;
+            $message = $ex->getMessage();
+        }
+
+        // response
+        $response = [
+            'success' => $success,
+            'message' => $message,
+        ];
+        return response()->json($response);
+
+        // $token = $request->user()->token();
+        // $token->revoke();
+        // $response = ['message' => 'You have been successfully logged out!'];
+        // return response($response, 200);
     }
 
 }

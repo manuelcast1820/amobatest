@@ -29,6 +29,6 @@ Route::group([], function () {
 });
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
+    Route::post('/logout', [ApiAuthController::class, 'logout']);
     Route::resource('profiles', ProfileController::class);
 });
