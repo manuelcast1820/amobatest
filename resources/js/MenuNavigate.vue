@@ -67,8 +67,7 @@ export default {
             const headers = { 'Content-Type': 'application/json',
                 Authorization: `Bearer ${localStorage.token}` 
             };
-            console.log('salirrrrr')
-            console.log(headers);
+            localStorage.token = "";
             this.axios
                 .post("/api/logout",{},{
                     headers: headers
